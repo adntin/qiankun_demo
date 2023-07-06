@@ -24,11 +24,11 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>QianKun Example</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <!-- <div id="root"></div> -->
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -39,5 +39,28 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <div class="mainapp">
+      <!-- 标题栏 -->
+      <header class="mainapp-header">
+        <h1>QianKun</h1>
+      </header>
+      <div class="mainapp-main">
+        <!-- 侧边栏 -->
+        <ul class="mainapp-sidemenu">
+          <li onclick="push('/react16')">React16</li>
+          <li onclick="push('/react15')">React15</li>
+          <li onclick="push('/vue')">Vue</li>
+          <li onclick="push('/vue3')">Vue3</li>
+          <li onclick="push('/angular9')">Angular9</li>
+          <li onclick="push('/purehtml')">Purehtml</li>
+        </ul>
+        <!-- 子应用  -->
+        <main id="subapp-container"></main>
+      </div>
+    </div>
+  
+    <script>
+      function push(subapp) { history.pushState(null, subapp, subapp) }
+    </script>
   </body>
 </html>

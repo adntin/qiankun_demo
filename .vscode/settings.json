@@ -1,0 +1,12 @@
+{
+  "fileheader.tpl": "/*\n * @Author: {author}\n * @Date: {createTime}\n * Copyright © Leedarson. All rights reserved.\n */\n",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "cSpell.words": ["lexikos", "tetris"]
+}
