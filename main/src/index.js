@@ -28,6 +28,13 @@ const loader = (loading) => render({ loading });
 registerMicroApps(
   [
     {
+      name: 'react18',
+      entry: '//localhost:8101',
+      container: '#subapp-viewport',
+      loader,
+      activeRule: '/react18',
+    },
+    {
       name: 'react16',
       entry: '//localhost:7100',
       container: '#subapp-viewport',
@@ -111,7 +118,7 @@ setGlobalState({
 /**
  * Step3 设置默认进入的子应用
  */
-setDefaultMountApp('/react16');
+setDefaultMountApp('/react18');
 
 /**
  * Step4 启动应用
