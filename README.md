@@ -64,3 +64,9 @@ return {
   }
 }
 ```
+
+8. 根目录下运行命令
+
+```shell
+yarn start
+```
