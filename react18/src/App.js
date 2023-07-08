@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { Suspense, lazy } from 'react';
+import { BrowserRouter, NavLink, Routes, Route } from 'react-router-dom';
+import Home from './Home';
+
+const About = lazy(() => import('./About'));
+
+const basename = window.__POWERED_BY_QIANKUN__ ? '/react18' : '/';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Suspense fallback={<h3>Loading...</h3>}>
+      <BrowserRouter basename={basename}>
+        <ul>
+          <li>
+            <NavLink to="/">Home</NavLink>
+            <NavLink to="/About">About</NavLink>
+          </li>
+        </ul>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="About" element={<About />} />
+        </Routes>
+      </BrowserRouter>
+    </Suspense>
   );
 }
 
