@@ -1,9 +1,22 @@
 # 步骤
 
-## 创建主应用
+## 创建 React 主应用
 
-    1. yarn init
-    2. yarn create react-app main
+1. 创建仓库配置，命令如下
+
+```shell
+yarn init -y
+```
+
+2. 创建工程项目，命令如下
+
+```shell
+yarn create react-app main
+```
+
+4. 修改文件`main/public/index.html`
+5. 修改文件`main/src/index.js`
+6. 修改文件`main/src/index.scss`
 
 ## 创建 React 微应用
 
