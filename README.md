@@ -83,3 +83,61 @@ return {
 ```shell
 yarn start
 ```
+
+## 打包部署
+
+1. 修改文件`/package.json`，内容如下
+
+```json
+{
+  "scripts": {
+    "build": "npm-run-all --parallel build:*",
+    "build:main": "cd ./main && yarn build",
+    "build:react18": "cd ./react18 && yarn build",
+    "deploy:local": "bash scripts/deploy-local.sh",
+    "deploy:server": "bash scripts/deploy-server.sh"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
+```
+
+2. 添加服务`http-server-spa`，命令如下
+
+```shell
+sudo npm install http-server-spa -g
+```
+
+3. 构建应用
+
+```shell
+# 构建文件
+yarn build
+# 本地验证
+yarn deploy:local
+# 正式环境
+yarn deploy:server
+```
+
+## Nginx 配置
+
+```
+server {
+  listen       443;
+  server_name  localhost;
+
+  location / {
+    root   html;
+    index  index.html index.htm;
+    try_files $uri $uri/ /index.html;
+  }
+
+  location /react18 {
+    root   html;
+    index  index.html index.htm;
+    try_files $uri $uri/ /react18/index.html;
+  }
+  # 其它微应用配置同上
+}
+```
