@@ -33,5 +33,7 @@ rm -rf $HOME/Desktop/www/build.zip
 
 ###### 6.启动服务 ######
 cd $HOME/Desktop/www
+# http-server-spa 会导致微应用`fallback`也使用主应用`index.html`
 # http-server-spa <directory> <fallback> <port>
-http-server-spa ./ ./index.html 9999
+# http-server-spa ./ ./index.html 8888
+http-server

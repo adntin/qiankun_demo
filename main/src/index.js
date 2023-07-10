@@ -25,14 +25,22 @@ const loader = (loading) => render({ loading });
  * Step2 注册子应用
  */
 
+// 部署之后注意三点：
+// 1. activeRule 不能和微应用的真实访问路径一样，否则在主应用页面刷新会直接变成微应用页面。
+// 2. 微应用的真实访问路径就是微应用的 entry，entry 可以为相对路径。
+// 3. 微应用的 entry 路径最后面的 / 不可省略，否则 publicPath 会设置错误，例如子项的访问路径是 http://localhost:8080/app1,那么 entry 就是 http://localhost:8080/app1/。
+
 registerMicroApps(
   [
     {
-      name: 'react18',
-      entry: '//localhost:8101',
+      name: 'react18', // 微应用的名称，微应用之间必须确保唯一。建议跟`package.json#name`一致。
+      entry:
+        process.env.NODE_ENV === 'development'
+          ? `//localhost:8801` // 本地调试，端口来自`/react18/.env.development`配置
+          : '/react18/', // 生产环境，微应用的真实访问路径，结尾必须包含`/`
       container: '#subapp-viewport',
       loader,
-      activeRule: '/react18',
+      activeRule: '/app-react18', // 微应用的路由访问路径，不能与`entry`一样，否则在主应用页面刷新会直接变成微应用页面。
     },
     {
       name: 'react16',
@@ -118,7 +126,7 @@ setGlobalState({
 /**
  * Step3 设置默认进入的子应用
  */
-setDefaultMountApp('/react18');
+setDefaultMountApp('/app-react18');
 
 /**
  * Step4 启动应用

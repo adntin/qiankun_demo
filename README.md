@@ -14,9 +14,9 @@ yarn init -y
 yarn create react-app main
 ```
 
-4. 修改文件`main/public/index.html`
-5. 修改文件`main/src/index.js`
-6. 修改文件`main/src/index.scss`
+4. 修改文件`main/public/index.html`，内容看具体文件
+5. 修改文件`main/src/index.js`，内容看具体文件
+6. 修改文件`main/src/index.scss`，内容看具体文件
 
 ## 创建 React 微应用
 
@@ -32,24 +32,12 @@ yarn create react-app react18
 yarn eject
 ```
 
-3. 创建文件`react18/.env`，配置端口，内容如下
+3. 创建文件`react18/.env.development`，内容看具体文件
 
-```shell
-  # 主应用 + 微应用，端口唯一
-  PORT=8101
-  # `yarn start` 可验证
-```
-
-4. 创建文件`react18/src/public-path.js`，内容如下
-
-```js
-if (window.__POWERED_BY_QIANKUN__) {
-  // eslint-disable-next-line no-undef
-  __webpack_public_path__ = window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__;
-}
-```
+4. 创建文件`react18/src/public-path.js`，内容看具体文件
 
 5. 修改文件`react18/src/index.js`，并导入`public-path.js`
+
 6. 修改文件`react18/config/webpack.config.js`，内容如下
 
 ```js
@@ -86,7 +74,51 @@ yarn start
 
 ## 打包部署
 
-1. 修改文件`/package.json`，内容如下
+1. 修改主应用`main/src/index.js`文件，内容如下
+
+```js
+// Step2 注册子应用
+registerMicroApps([
+  {
+    name: 'react18', // 微应用的名称，微应用之间必须确保唯一。建议跟`package.json#name`一致。
+    entry:
+      process.env.NODE_ENV === 'development'
+        ? `//localhost:8801` // 本地调试，端口来自`/react18/.env.development`配置
+        : '/react18/', // 生产环境，微应用的真实访问路径，结尾必须包含`/`
+    container: '#subapp-viewport',
+    loader,
+    activeRule: '/app-react18', // 微应用的路由访问路径，不能与`entry`一样，否则在主应用页面刷新会直接变成微应用页面。
+  },
+  // ...
+]);
+// Step3 设置默认进入的子应用
+setDefaultMountApp('/app-react18');
+```
+
+3. 修改主应用`main/public/index.html`文件，内容如下
+
+```html
+<li onclick="push('/app-react18')">React18</li>
+```
+
+4. 修改微应用`react18/src/App.js`文件，内容如下
+
+```js
+// `/app-react18`结尾不能加`/`，因为主应用注册子应用时`activeRule`属性结尾没有`/`
+const basename = window.__POWERED_BY_QIANKUN__
+  ? '/app-react18'
+  : process.env.NODE_ENV === 'development'
+  ? '/'
+  : '/react18/';
+```
+
+5. 创建文件`react18/.env.production`文件，内容看具体文件
+
+6. 创建文件`/scripts/deploy-local.sh`，内容看具体文件
+
+7. 创建文件`/scripts/deploy-server.sh`，内容看具体文件
+
+8. 修改文件`/package.json`，内容如下
 
 ```json
 {
@@ -94,8 +126,8 @@ yarn start
     "build": "npm-run-all --parallel build:*",
     "build:main": "cd ./main && yarn build",
     "build:react18": "cd ./react18 && yarn build",
-    "deploy:local": "bash scripts/deploy-local.sh",
-    "deploy:server": "bash scripts/deploy-server.sh"
+    "deploy:local": "yarn build && bash scripts/deploy-local.sh",
+    "deploy:server": "yarn build && bash scripts/deploy-server.sh"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.5"
@@ -103,16 +135,16 @@ yarn start
 }
 ```
 
-2. 添加服务`http-server-spa`，命令如下
+2. 添加服务`http-server`，命令如下
 
 ```shell
-sudo npm install http-server-spa -g
+sudo npm install http-server -g
 ```
 
 3. 构建应用
 
 ```shell
-# 构建文件
+# 构建文件(可省略)
 yarn build
 # 本地验证
 yarn deploy:local

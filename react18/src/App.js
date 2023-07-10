@@ -4,7 +4,12 @@ import Home from './Home';
 
 const About = lazy(() => import('./About'));
 
-const basename = window.__POWERED_BY_QIANKUN__ ? '/react18' : '/';
+// `/app-react18`结尾不能加`/`，因为主应用注册子应用时`activeRule`属性结尾没有`/`
+const basename = window.__POWERED_BY_QIANKUN__
+  ? '/app-react18'
+  : process.env.NODE_ENV === 'development'
+  ? '/'
+  : '/react18/';
 
 function App() {
   return (

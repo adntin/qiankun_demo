@@ -17,5 +17,7 @@ cp -a main/build/* $HOME/Desktop/www
 
 ###### 3.启动服务 ######
 cd $HOME/Desktop/www
+# http-server-spa 会导致微应用`fallback`也使用主应用`index.html`
 # http-server-spa <directory> <fallback> <port>
-http-server-spa ./ ./index.html 8888
+# http-server-spa ./ ./index.html 8888
+http-server
